@@ -5,19 +5,17 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import com.example.mediplus20.R.mipmap.img
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.mediplus20.navigation.ROUTE_DOCTOR
 import com.example.mediplus20.ui.theme.MediPlus20Theme
 
 data class Hospital(
@@ -44,7 +42,18 @@ val topKenyanHospitals = listOf(
 fun HospitalsScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Nearby Hospitals") })
+            TopAppBar(
+                title = { Text("Nearby Hospitals") },
+                actions = {
+                    Button(
+                        onClick = { navController.navigate(ROUTE_DOCTOR) },
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Text("Doctors")
+                    }
+                }
+            )
         }
     ) { padding ->
         LazyColumn(
@@ -77,7 +86,6 @@ fun HospitalCard(hospital: Hospital) {
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
             Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(hospital.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
@@ -119,7 +127,7 @@ fun HospitalTypeTag(type: String) {
 @Preview(showBackground = true)
 @Composable
 fun HospitalScreenPreview() {
-    MediPlus20Theme(darkTheme = true){
-    HospitalsScreen(navController = rememberNavController())
+    MediPlus20Theme(darkTheme = true) {
+        HospitalsScreen(navController = rememberNavController())
     }
 }
